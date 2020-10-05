@@ -29,12 +29,7 @@ Say::Say(int64_t in)
 
 static inline string digit_to_string(int num)
 {
-    if (num <= 10 && num >= 0)
-    {
-        return digits_text[num];
-    } else {
-        return ""; //! Should be unreachable
-    }
+    return digits_text[num];
 }
 
 static inline string hundreds(int num)
@@ -69,6 +64,12 @@ static string process_chunk(int num)
     return hundreds(first_digit) + decimals(num - (first_digit * 100));
 }
 
+static inline string pluralize (int chunk, int i)
+{
+    if (scales[i].empty()) return "";
+    return chunk > 1 ? scales[i] + "s " : scales[i];
+}
+
 string Say::get_name()
 {
     int n = chunks.size();
@@ -78,14 +79,13 @@ string Say::get_name()
         if (chunks[i] == 0) { continue; }
         string aux = process_chunk(chunks[i]);
         //! We don't bound-check on `scales`, but it should be enough for the max values of int64_t, so I guess we're fine.
-        res += aux + " " + scales[i] + " ";
+        res += aux + " " + pluralize(chunks[i], i) + " ";
     }
     return res;
 }
 
 void Say::get_chunks(uint64_t input)
 {
-    std::cout << "In get_chunks: input = " << input << '\n';
     while (input >= 100)
     {
         chunks.push_back(input % 1000);
