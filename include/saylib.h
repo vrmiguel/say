@@ -8,10 +8,10 @@
 class Say{
     std::vector<int> chunks;
     bool is_positive;
-    void get_chunks(int64_t);
+    void get_chunks(uint64_t);
 public:
     Say(int64_t);
-    std::string annotate();
+    std::string get_name();
 };
 
 #endif
