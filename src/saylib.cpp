@@ -7,10 +7,10 @@ using std::string;
 using std::array;
 
 //! Use constexpr here when C++20 is available.
-static const array<string, 4> scales = {"", "thousand", "million", "billion"};
+static const array<string, 4>  scales = {"", "thousand", "million", "billion"};
 static const array<string, 10> digits_text = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-static const array<string, 10> decimals_text = {"and ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen","eighteen","nineteen"};
-
+static const array<string, 10> tenths_of_one_text = {"and ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen","eighteen","nineteen"};
+static const array<string, 10>  tenths_text = {"", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
 
 Say::Say(int64_t in)
@@ -43,39 +43,14 @@ static inline string hundreds(int num)
 
 static inline string decimals(int num)
 {
-    string res;
     //! num/10 == first digit of num
-    switch(num/10)
+    int div10;
+    div10 = num/10;
+    if (div10 == 1)
     {
-    case 9:
-        res = "ninety";
-        break;
-    case 8:
-        res = "eighty";
-        break;
-    case 7:
-        res = "seventy";
-        break;
-    case 6:
-        res = "sixty";
-        break;
-    case 5:
-        res = "fifty";
-        break;
-    case 4:
-        res = "fourty";
-        break;
-    case 3:
-        res = "thirty";
-        break;
-    case 2:
-        res = "twenty";
-        break;
-    case 1:
-        return decimals_text[num%10]; //! In this case, we already checked the last digit.
-        break;  //! Unneeded break?
-    default: break;
+        return tenths_of_one_text[num%10];
     }
+    string res = tenths_text[div10];
 
     //! Checking the second digit
     if (!res.empty() && (num % 10) > 0)
