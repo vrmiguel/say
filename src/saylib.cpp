@@ -1,10 +1,16 @@
 #include <iostream>
 #include "include/saylib.h"
+#include <array>
 
 using std::vector;
 using std::string;
+using std::array;
 
-static const vector<string> scales = {"", "thousand", "million", "billion"};
+//! Use constexpr here when C++20 is available.
+static const array<string, 4> scales = {"", "thousand", "million", "billion"};
+static const array<string, 10> digits_text = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+static const array<string, 10> decimals_text = {"and ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen","eighteen","nineteen"};
+
 
 
 Say::Say(int64_t in)
@@ -18,29 +24,13 @@ Say::Say(int64_t in)
     get_chunks(in);
 }
 
-string digit_to_string(int num)
+static inline string digit_to_string(int num)
 {
-    switch (num)
+    if (num <= 10 && num >= 0)
     {
-    case 9:
-        return "nine";
-    case 8:
-        return "eight";
-    case 7:
-        return "seven";
-    case 6:
-        return "six";
-    case 5:
-        return "five";
-    case 4:
-        return "four";
-    case 3:
-        return "three";
-    case 2:
-        return "two";
-    case 1:
-        return "one";
-    default: return "";
+        return digits_text[num];
+    } else {
+        return ""; //! Should be unreachable
     }
 }
 
@@ -82,42 +72,8 @@ static inline string decimals(int num)
         res = "twenty";
         break;
     case 1:
-        switch (num%10)
-        {
-        case 0:
-            res = "and ten";
-            break;
-        case 1:
-            res = "eleven";
-            break;
-        case 2:
-            res = "twelve";
-            break;
-        case 3:
-            res = "thirteen";
-            break;
-        case 4:
-            res = "fourteen";
-            break;
-        case 5:
-            res = "fifteen";
-            break;
-        case 6:
-            res = "sixteen";
-            break;
-        case 7:
-            res = "seventeen";
-            break;
-        case 8:
-            res = "eighteen";
-            break;
-        case 9:
-            res = "nineteen";
-            break;
-        default: exit(0);   //! Unreachable
-        }
-        return res; //! In this case, we already checked the last digit.
-        break;
+        return decimals_text[num%10]; //! In this case, we already checked the last digit.
+        break;  //! Unneeded break?
     default: break;
     }
 
@@ -151,6 +107,7 @@ string Say::annotate()
             continue;
         }
         string aux = process_chunk(chunks[i]);
+        //! TODO: this blows if if i > scales[i].size()
         res += aux + " " + scales[i] + " ";
     }
     return res;
