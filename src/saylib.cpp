@@ -9,7 +9,7 @@ using std::array;
 //! Use constexpr here when C++20 is available.
 static const array<string, 7>  scales = {"", "thousand", "million", "billion", "trillion", "quadrillion", "quintillion"}; //! Enough to describe std::numeric_limits<int64_t>::max()
 static const array<string, 10> digits_text = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
-static const array<string, 10> tenths_of_one_text = {"and ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen","eighteen","nineteen"};
+static const array<string, 10> tenths_of_one_text = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen","eighteen","nineteen"};
 static const array<string, 10>  tenths_text = {"", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 
 
